@@ -5,7 +5,9 @@ from django.utils.decorators import method_decorator
 from django.http import HttpResponse, Http404
 from trails.models import Person
 import os
+from django.conf import settings
 # Create your views here.
+
 
 def checkperson(requests, numm):
 	try:
@@ -19,7 +21,9 @@ def index_page(request):
 	return render(request, 'trails/index.html')
 
 def bags(requests):
-    file_path = os.path.join(settings.MEDIA_ROOT, 'MobileHome-master.zip')
+    #file_path = 'media/MobileHome-master.zip'
+    file_path = os.path.join(settings.MEDIA_ROOT,'MobileHome-master.zip')
+    print("*****",file_path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/zip")
