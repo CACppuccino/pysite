@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-
+from trails import views as tview
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^trails/', include('trails.urls')),
+    url(r'^$',tview.index_page)
 ]
 
