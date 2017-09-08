@@ -4,6 +4,7 @@ from trails import views as tviews
 
 urlpatterns = [
 	url(r'^person/(?P<numm>[0-9])/$',tviews.checkperson),
-	url(r'^person/bags/$',tviews.bags)
+	url(r'^person/bags/$',tviews.bags),
+	url(r'^person/download/$',tviews.downloads),
 ]
 

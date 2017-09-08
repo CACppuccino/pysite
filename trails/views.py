@@ -18,15 +18,20 @@ def checkperson(requests, numm):
 	return HttpResponse(records)
 
 def index_page(request):
-	return render(request, 'trails/index.html')
+	todpage = '/trails/person/download/'
+	return render(request, 'trails/index.html', {'todpage':todpage})
+
+def downloads(request):
+	dpage = '../bags/'
+	return render(request, 'trails/downloads.html', {'dpage':dpage})
 
 def bags(requests):
     #file_path = 'media/MobileHome-master.zip'
-    file_path = os.path.join(settings.MEDIA_ROOT,'MobileHome-master.zip')
-    print("*****",file_path)
+    file_path = os.path.join(settings.MEDIA_ROOT,'MobileHome--master.zip')
+    #print("*****",file_path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="application/zip")
-            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-            return response
+    	    response = HttpResponse(fh.read(), content_type="application/zip")
+    	    response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+        return response
     raise Http404

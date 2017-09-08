@@ -118,7 +118,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+# For media route
+MEDIA_ROOT = '/home/cup/Documents/tutorial/media'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
