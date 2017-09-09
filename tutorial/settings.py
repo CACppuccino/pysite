@@ -26,7 +26,7 @@ SECRET_KEY = '_!a%vyl-(#i19hn1o@bb)z1n-8e(!!d4key#h7l!w51=9-o1^g'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '13.210.66.69','localhost','127.0.0.1'
+   'lordvice.net','www.lordvice.net', '13.210.66.69','localhost','127.0.0.1'
 ]
 
 
