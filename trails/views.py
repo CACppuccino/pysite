@@ -27,8 +27,12 @@ def downloads(request):
 
 def bags(requests):
     #file_path = 'media/MobileHome-master.zip'
-    file_path = os.path.join(settings.MEDIA_ROOT,'MobileHome--master.zip')
-    #print("*****",file_path)
+    file_path = 'init'
+    if not settings.DEBUG or not settings.NOT_ON_SERVER: 
+        file_path = os.path.join(settings.MEDIA_ROOT,'MobileHome--master.zip')
+    else:
+        file_path = '/home/cup/Documents/tutorial/media/MobileHome--master.zip'
+    print("*****",file_path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
     	    response = HttpResponse(fh.read(), content_type="application/zip")

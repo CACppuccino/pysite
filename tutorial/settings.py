@@ -25,6 +25,7 @@ SECRET_KEY = '_!a%vyl-(#i19hn1o@bb)z1n-8e(!!d4key#h7l!w51=9-o1^g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+NOT_ON_SERVER = True
 ALLOWED_HOSTS = [
    'lordvice.net','www.lordvice.net', '13.210.66.69','localhost','127.0.0.1'
 ]
@@ -119,7 +120,7 @@ USE_L10N = True
 USE_TZ = True
 
 # For media route
-MEDIA_ROOT = '/home/cup/Documents/tutorial/media'
+MEDIA_ROOT = '/var/www/html/pysite/media'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
