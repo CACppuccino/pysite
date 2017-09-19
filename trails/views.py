@@ -6,8 +6,18 @@ from django.http import HttpResponse, Http404
 from trails.models import Person
 import os
 from django.conf import settings
+from django.contrib.auth import authenticate, login
 # Create your views here.
 
+
+def log(request):
+	uname = request.POST['username']
+	pw = request.POST['password']
+	user = authenticate(request, username = uname, password = pw)
+	if user is not None:
+		return HttpResponse("welcome!")
+	else:
+		return HttpResponse("wrong password")
 
 def checkperson(requests, numm):
 	try:
@@ -18,8 +28,22 @@ def checkperson(requests, numm):
 	return HttpResponse(records)
 
 def index_page(request):
-	todpage = '/trails/person/download/'
-	return render(request, 'trails/index.html', {'todpage':todpage})
+	print("0step")
+	if request.method == 'POST':
+		print("1st step passed")
+		username = request.POST['username']
+		password = request.POST['password']
+		print("2nd step")
+		user = authenticate(request, username = username, password = password)
+		if user is not None:
+			print("3rd step")
+			return HttpResponse("welcome!")
+		else:
+			print("3rd-2 step")
+			return HttpResponse("wrong num")
+	else:
+		todpage = '/trails/person/download/'
+		return render(request, 'trails/index.html', {'todpage':todpage})
 
 def downloads(request):
 	dpage = '../bags/'

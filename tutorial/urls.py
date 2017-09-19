@@ -19,6 +19,7 @@ from trails import views as tview
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^trails/', include('trails.urls')),
+    url(r'^log/$',tview.log),
     url(r'^$',tview.index_page)
 ]
 
