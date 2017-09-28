@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -6,18 +6,8 @@ from django.http import HttpResponse, Http404
 from trails.models import Person
 import os
 from django.conf import settings
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
-
-
-def log(request):
-	uname = request.POST['username']
-	pw = request.POST['password']
-	user = authenticate(request, username = uname, password = pw)
-	if user is not None:
-		return HttpResponse("welcome!")
-	else:
-		return HttpResponse("wrong password")
 
 def checkperson(requests, numm):
 	try:
@@ -28,7 +18,6 @@ def checkperson(requests, numm):
 	return HttpResponse(records)
 
 def index_page(request):
-	print("0step")
 	if request.method == 'POST':
 		print("1st step passed")
 		username = request.POST['username']
@@ -36,18 +25,32 @@ def index_page(request):
 		print("2nd step")
 		user = authenticate(request, username = username, password = password)
 		if user is not None:
-			print("3rd step")
-			return HttpResponse("welcome!")
-		else:
-			print("3rd-2 step")
-			return HttpResponse("wrong num")
-	else:
-		todpage = '/trails/person/download/'
-		return render(request, 'trails/index.html', {'todpage':todpage})
+			login(request, user)		
+#			return HttpResponse("welcome!")
 
+#			return render
+		else:
+			return HttpResponse("wrong num")
+	userUrl = '/trails/usr/dashboard'
+	userLogout = '/trails/usr/logout'
+	todpage = '/trails/person/download/'
+	return render(request, 'trails/index.html', {'todpage':todpage,'userUrl':userUrl,'userLogout':userLogout })
+
+def log_user_out(request):
+	logout(request)
+	return redirect('index')
+	
 def downloads(request):
 	dpage = '../bags/'
 	return render(request, 'trails/downloads.html', {'dpage':dpage})
+
+def dashboard(request):
+	userUrl = '#'
+	userLogout = '../logout'
+	data = {}
+	data['userUrl'] = userUrl
+	data['userLogout'] = userLogout	
+	return render(request,'trails/dashboard.html', data)
 
 def bags(requests):
     #file_path = 'media/MobileHome-master.zip'
@@ -56,7 +59,6 @@ def bags(requests):
         file_path = os.path.join(settings.MEDIA_ROOT,'MobileHome--master.zip')
     else:
         file_path = '/home/cup/Documents/tutorial/media/MobileHome--master.zip'
-    print("*****",file_path)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
     	    response = HttpResponse(fh.read(), content_type="application/zip")
