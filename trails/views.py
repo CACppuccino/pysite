@@ -4,10 +4,38 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse, Http404
 from trails.models import Person
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.validators import UnicodeUsernameValidator
 import os
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 # Create your views here.
+
+def user_register(request):
+	if request.method == 'POST':
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			user = form.save(commit = False)
+			username = form.cleaned_data['username']
+			raw_password = form.cleaned_data['password1']
+			user.set_password(raw_password)
+			user.save()
+			user_auth = authenticate(username = username, password = raw_password)
+			user.set_password(raw_password)
+			login(request, user_auth)
+			return redirect('dash_board')
+		else:
+			return HttpResponse('invalid registration')
+	else:
+		form = UserCreationForm()
+		userUrl = '#'
+		userLogout = '../logout'
+		data = {}
+		data['userUrl'] = userUrl
+		data['userLogout'] = userLogout	
+		data['form'] = form
+		return render(request,'trails/register.html', data)
 
 def checkperson(requests, numm):
 	try:
@@ -19,10 +47,10 @@ def checkperson(requests, numm):
 
 def index_page(request):
 	if request.method == 'POST':
-		print("1st step passed")
+		# print("1st step passed")
 		username = request.POST['username']
 		password = request.POST['password']
-		print("2nd step")
+		# print("2nd step")
 		user = authenticate(request, username = username, password = password)
 		if user is not None:
 			login(request, user)		

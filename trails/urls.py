@@ -7,7 +7,8 @@ urlpatterns = [
 	url(r'^person/bags/$',tviews.bags),
 	url(r'^person/download/$',tviews.downloads),
 	url(r'^usr/logout/$',tviews.log_user_out),
-	url(r'^usr/dashboard/$',tviews.dashboard),
+	url(r'^usr/register/$', tviews.user_register, name = 'register'),
+	url(r'^usr/dashboard/$',tviews.dashboard, name= 'dash_board'),
 ]
 
 
