@@ -10,9 +10,39 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 import os
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
+from .forms import Works_upload_form
 # Create your views here.
 
+def lost_street_index(request):
+	userLogout = '../logout'
+	data = {}
+	data['userLogout'] = userLogout	
+	data['userUrl'] = '../usr/dashboard'
+	data['uploadForm'] = Works_upload_form
+	if request.method == 'GET':
+		return render(request, 'trails/loststreet.html', data)
+	elif request.method == 'POST':
+		form = Works_upload_form(request.POST, request.FILES)
+		if form.is_valid():
+			form.save()
+			return HttpResponse('file uploaded successfully')
+		else:
+			return HttpResponse('file invalid!')
+	else:
+		return HttpResponse('failed to upload')	
+		
+
+def contri_index(request):
+	userLogout = '../logout'
+	data = {}
+	data['userLogout'] = userLogout	
+	data['userUrl'] = '../usr/dashboard'
+	return render(request,'trails/contribute.html',data)
+
 def user_register(request):
+	userLogout = '../logout'
+	data = {}
+	data['userLogout'] = userLogout	
 	if request.method == 'POST':
 		form = UserCreationForm(request.POST)
 		if form.is_valid():
@@ -24,26 +54,15 @@ def user_register(request):
 			user_auth = authenticate(username = username, password = raw_password)
 			user.set_password(raw_password)
 			login(request, user_auth)
-			return redirect('dash_board')
+			data['userUrl'] = '#'
+			return redirect('dash_board',data)
 		else:
 			return HttpResponse('invalid registration')
 	else:
 		form = UserCreationForm()
-		userUrl = '#'
-		userLogout = '../logout'
-		data = {}
-		data['userUrl'] = userUrl
-		data['userLogout'] = userLogout	
+		data['userUrl'] = '../dashboard'
 		data['form'] = form
 		return render(request,'trails/register.html', data)
-
-def checkperson(requests, numm):
-	try:
-		record = Person.objects.get(id=numm)
-	except Exception:
-		raise Http404("Person doesn't exist")
-	records = record.first_name+" "+record.last_name
-	return HttpResponse(records)
 
 def index_page(request):
 	if request.method == 'POST':
@@ -62,7 +81,10 @@ def index_page(request):
 	userUrl = '/trails/usr/dashboard'
 	userLogout = '/trails/usr/logout'
 	todpage = '/trails/person/download/'
-	return render(request, 'trails/index.html', {'todpage':todpage,'userUrl':userUrl,'userLogout':userLogout })
+	data = {'todpage':todpage,'userUrl':userUrl,'userLogout':userLogout }
+	data['toHist'] = '/trails/con'
+	data['lstreetUrl'] = '/trails/lstreet'
+	return render(request, 'trails/index.html',data)
 
 def log_user_out(request):
 	logout(request)
