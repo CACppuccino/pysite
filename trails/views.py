@@ -128,4 +128,5 @@ def bags(requests):
     	    response = HttpResponse(fh.read(), content_type="application/zip")
     	    response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
         return response
-    raise Http404
+    return HttpResponse('file not found',file_path)
+    #raise Http404
