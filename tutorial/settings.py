@@ -15,7 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
+# environment setting -- not the right path according to python search path
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'tutorial.settings'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -30,6 +31,8 @@ ALLOWED_HOSTS = [
    'lordvice.net','www.lordvice.net', '13.210.66.69','localhost','127.0.0.1'
 ]
 
+# Default tablespace
+#DEFAULT_TABLESPACE = 'table'
 
 # Application definition
 
@@ -120,8 +123,12 @@ USE_L10N = True
 USE_TZ = True
 
 # For media route
-MEDIA_ROOT = '/var/www/html/pysite/media'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)

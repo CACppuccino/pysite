@@ -3,7 +3,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse, Http404
-from trails.models import Person
+from trails.models import Dashboard_news, Documents, Works, Profile 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.validators import UnicodeUsernameValidator
@@ -23,7 +23,9 @@ def lost_street_index(request):
 		return render(request, 'trails/loststreet.html', data)
 	elif request.method == 'POST':
 		form = Works_upload_form(request.POST, request.FILES)
+		print (form)
 		if form.is_valid():
+			#form = Works_upload_form(request.POST, request.FILES)
 			form.save()
 			return HttpResponse('file uploaded successfully')
 		else:
@@ -45,6 +47,7 @@ def user_register(request):
 	data['userLogout'] = userLogout	
 	if request.method == 'POST':
 		form = UserCreationForm(request.POST)
+		
 		if form.is_valid():
 			user = form.save(commit = False)
 			username = form.cleaned_data['username']
@@ -54,8 +57,8 @@ def user_register(request):
 			user_auth = authenticate(username = username, password = raw_password)
 			user.set_password(raw_password)
 			login(request, user_auth)
-			data['userUrl'] = '#'
-			return redirect('dash_board',data)
+
+			return redirect('dash_board')
 		else:
 			return HttpResponse('invalid registration')
 	else:
@@ -99,7 +102,14 @@ def dashboard(request):
 	userLogout = '../logout'
 	data = {}
 	data['userUrl'] = userUrl
-	data['userLogout'] = userLogout	
+	data['userLogout'] = userLogout
+	logged_user = None	
+
+	if request.user.is_authenticated():
+		data['groups'] = request.user.groups
+		data['activity'] = Dashboard_news.objects.all().order_by('-time')[:15]
+		data['profile'] = Profile.objects.get(user= request.user)
+		print(data['profile'].headImg)
 	return render(request,'trails/dashboard.html', data)
 
 def bags(requests):
