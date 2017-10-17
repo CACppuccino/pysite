@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '_!a%vyl-(#i19hn1o@bb)z1n-8e(!!d4key#h7l!w51=9-o1^g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False 
+DEBUG = True 
 
 NOT_ON_SERVER = True
 ALLOWED_HOSTS = [
@@ -124,7 +124,7 @@ USE_TZ = True
 
 # For media route
 MEDIA_URL = '/media/'
-MEDIA_ROOT = [os.path.join(BASE_DIR, 'media'),]
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 #MEDIA_ROOT = '/var/www/html/pysite/media'
