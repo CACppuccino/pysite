@@ -3,7 +3,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse, Http404
-from trails.models import Dashboard_news, Documents, Works, Profile 
+from trails.models import Dashboard_news, Documents, Works, Profile, vsr_Streets, vsr_Allbuildings 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.validators import UnicodeUsernameValidator
@@ -39,6 +39,7 @@ def contri_index(request):
 	data = {}
 	data['userLogout'] = userLogout	
 	data['userUrl'] = '../usr/dashboard'
+	data['streets'] = vsr_Streets.objects.using('vsr').all()
 	return render(request,'trails/contribute.html',data)
 
 def user_register(request):
