@@ -11,6 +11,7 @@ import os
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from .forms import Works_upload_form
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 # Create your views here.
 
 def lost_street_index(request):
@@ -41,6 +42,22 @@ def contri_index(request):
 	data['userUrl'] = '../usr/dashboard'
 	data['streets'] = vsr_Streets.objects.using('vsr').all()
 	return render(request,'trails/contribute.html',data)
+
+def contri_doc(request, sid):
+	try:
+		res = vsr_Streets.objects.using('vsr').get(name=sid)
+	except ObjectDoesNotExist:
+		print("ObjDoesNotExist")
+		return HttpResponse(status = 404)
+	except MultipleObjectsReturned:
+		print("MultiResults")
+		return HttpResponse(status = 400)
+
+	buildings = vsr_Allbuildings.objects.using('vsr').filter(streetname=sid)
+	data = {}
+	data['buildings'] = buildings
+
+	return render(request, 'trails/buildings.html', data)
 
 def user_register(request):
 	userLogout = '../logout'

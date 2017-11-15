@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+{% for x in buildings%}
+<div class="col-md-12 block-center" style="margin:1em;">
+	<button class="primary btn btn-primary" onclick="funcShow({{x.id}})">{{x.buildingname}}</button>
+<div id="{{x.id}}" class="col-md-12" style="display:none">
+
+	{% if x.streetno %}<h5> Street No.  {{x.streetno}}</h5> {% endif %}
+	{% if x.builddate %}<h5> Built in {{x.builddate}} {% if x.demolishdate %}  and Demolished in {{x.demolishdate}} {% endif %}</h5>{% endif %}
+	{% if x.builder %} <h5>{{x.builder}}</h5>{% endif %}
+	{% if x.links %}
+		<h3>Relvant Links:</h3>
+		<ul>
+
+		<li><a href="{{x.links}}">{{x.links}}</a></li>
+
+		</ul>	
+	{% endif %}
+</div>
+</div>
+{% endfor %}
+{% endblock%}

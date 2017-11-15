@@ -38,7 +38,7 @@ class Dashboard_news(models.Model):
 
 class vsr_Allbuildings(models.Model):
     primarykey = models.TextField(db_column='PrimaryKey', unique=True, blank=True, null=True)  # Field name made lowercase. This field type is a guess.
-    streetname = models.TextField(db_column='StreetName', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    streetname = models.TextField(db_column='StreetName', unique=True)#ForeignKey('vsr_Streets', on_delete = models.CASCADE, db_index=False)  # Field name made lowercase. This field type is a guess.
     streetno = models.FloatField(db_column='StreetNo', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
     buildingname = models.TextField(db_column='BuildingName', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
     buildingpix = models.TextField(db_column='BuildingPix', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
