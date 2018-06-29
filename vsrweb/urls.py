@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^usrinfo/', include('uinfo.urls', namespace='uinfo')),
     url(r'^loststreet/',include('street.urls', namespace='loststreet')),
     url(r'^vr/',include('vr.urls', namespace='vr')),
+    url(r'^doc/', include('streetdoc.urls', namespace='streetdoc'))
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = format_suffix_patterns(urlpatterns)

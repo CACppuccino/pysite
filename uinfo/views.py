@@ -8,6 +8,8 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_jwt.views import JSONWebTokenAPIView
+from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from .serializers import basicUser
 
 # Create your views here.
@@ -16,10 +18,8 @@ class UserList(APIView):
     """
     A trail for the user list api
     """
-    """
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,) 
-    """
     def get(self, request, format=None):
         usr = User.objects.all()
         serializer = basicUser(usr, many=True)
@@ -30,9 +30,6 @@ class usrValidate(APIView):
     for validation of the user
     """
     parser_classes = (JSONParser,)
-
-    def get(self, request, format=None):
-        return Response('wrong method')
 
     def post(self, request, format=None):
         uname = request.data.get('username', None)

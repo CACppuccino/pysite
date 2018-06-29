@@ -26,7 +26,7 @@ class ls_gallery(models.Model):
         #return str(self.image)
 
 class ls_comments(models.Model):
-    sname = models.ForeignKey(lost_street, on_delete = models.CASCADE)
-    uname = models.ForeignKey(User, on_delete = models.CASCADE)
+    sname = models.ForeignKey(lost_street, related_name='comments', on_delete = models.CASCADE)
+    uname = models.ForeignKey(User, related_name='user', on_delete = models.CASCADE)
     time = models.DateTimeField(editable = False, default = timezone.now)
     content = models.TextField()

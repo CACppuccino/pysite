@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'doc.apps.DocConfig',
     'rest_framework',
     'uinfo',
     'corsheaders',
@@ -61,6 +60,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:8000',
@@ -121,15 +122,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+"""
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA':datetime.timedelta(seconds=3600)        
 }
+"""
+"""
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     )
 }
+"""
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
