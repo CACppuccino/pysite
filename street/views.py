@@ -57,7 +57,6 @@ class street_comment(APIView):
     permission_classes = (IsAuthenticated,)
     
     def post(self, request, format=None):
-        print('here', request.user)
         if request.user.is_authenticated():
             user = request.user # get the user, not the username
         else:

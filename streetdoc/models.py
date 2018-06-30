@@ -25,9 +25,11 @@ class doc_building(models.Model):
     name = models.CharField(max_length = 100)
     cover = models.ImageField(upload_to = 'stdoc/bcover')
     intro = models.TextField()
-    status = models.CharField(max_length = 50) # status of this document: proved, waiting, notproved etc.
+    status = models.CharField(max_length = 50, default='waiting') # status of this document: proved, waiting, notproved etc.
     author = models.ForeignKey(User, on_delete = models.CASCADE)
 
+    def __str__(self):
+        return 'sid: {} {}, {}'.format(self.stname, self.name, self.status)
 """
 class doc_permit_building(models.Model):
     name = models.CharField(max_length = 100)
