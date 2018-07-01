@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User 
 from rest_framework.decorators import api_view
@@ -10,7 +11,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_jwt.views import JSONWebTokenAPIView
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
-from .serializers import basicUser
+from .serializers import BasicUserSerializer, UserInfoSerializer
+from .models import UserInfo
 
 # Create your views here.
 
@@ -21,9 +23,38 @@ class UserList(APIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,) 
     def get(self, request, format=None):
-        usr = User.objects.all()
-        serializer = basicUser(usr, many=True)
-        return Response(serializer.data)
+        if request.user.is_authenticated():
+            usr = request.user
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            uinfo = UserInfo.objects.get(user=usr)
+        except ObjectDoesNotExist:
+            uinfo = UserInfo(user=usr)
+            uinfo.save()
+            serializer = UserInfoSerializer(uinfo)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = UserInfoSerializer(uinfo)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        if request.user.is_authenticated():
+            usr = request.user
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            uinfo = UserInfo.objects.get(user=usr)
+        except ObjectDoesNotExist:
+            # create the userinfo model for the new user
+            uinfo = UserInfo(user=usr, organization=request.data['organization'], summary=request.data['summary'])
+            uinfo.save()
+            return Response(status=status.HTTP_201_CREATED)
+        uinfo.organization = request.data['organization']
+        uinfo.summary = request.data['summary']
+        uinfo.save()
+        usr.email = request.data['email']
+        usr.save()
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 class usrValidate(APIView):
     """
