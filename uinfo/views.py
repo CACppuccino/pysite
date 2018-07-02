@@ -80,6 +80,25 @@ class usrRigister(APIView):
         
         return Response('ok') 
 
+class ResetPass(APIView):
+
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    permission_classes = (IsAuthenticated,) 
+
+    def post(self, request, format=None):
+        if request.user.is_authenticated():
+            user = request.user
+            npass = request.data['npass']
+            opass = request.data['opass']
+            if npass and user.check_password(opass):
+                user.set_password(npass)
+                user.save()
+                return Response(user.username, status=status.HTTP_202_ACCEPTED)
+            print(npass, user.check_password(opass))
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 @api_view(['GET'])
 def repeat_user(request):
     if request.method == 'GET':

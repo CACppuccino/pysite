@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^usrRegister/$', views.usrRigister.as_view()),
     url(r'^basicInfo/$', views.UserList.as_view()),
     url(r'^authValidate/$', views.usrValidate.as_view()),
-    url(r'repeatUser/$', views.repeat_user)
+    url(r'repeatUser/$', views.repeat_user),
+    url(r'resetPass/$', views.ResetPass.as_view()),
 ]
 
