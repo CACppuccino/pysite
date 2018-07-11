@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User 
+from rest_framework.generics import CreateAPIView
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
@@ -11,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_jwt.views import JSONWebTokenAPIView
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
-from .serializers import BasicUserSerializer, UserInfoSerializer
+from .serializers import BasicUserSerializer, UserInfoSerializer, UserSerializer
 from .models import UserInfo
 
 # Create your views here.
@@ -71,14 +72,12 @@ class usrValidate(APIView):
             return Response('authenticatiion succeed')    
         return Response('authentication failed')
 
-class usrRigister(APIView):
+class usrRigister(CreateAPIView):
     """
     for user registeration
     """
-    def post(self, request, format=None):
-        print(request.data)
-        
-        return Response('ok') 
+    model = User
+    serializer_class = UserSerializer
 
 class ResetPass(APIView):
 
@@ -102,7 +101,7 @@ class ResetPass(APIView):
 @api_view(['GET'])
 def repeat_user(request):
     if request.method == 'GET':
-        uname = request.GET.get('username', None)
+        uname = request.query_params.get('username', None)
         if uname and not User.objects.filter(username=uname).exists():
             return Response('pass')
         else:
