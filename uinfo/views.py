@@ -70,7 +70,7 @@ class usrValidate(APIView):
         if user is not None:
             login(request, user)
             return Response('authenticatiion succeed')    
-        return Response('authentication failed')
+        return Response('authentication failed',status=status.HTTP_400_BAD_REQUEST)
 
 class usrRigister(CreateAPIView):
     """
@@ -97,6 +97,12 @@ class ResetPass(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+class Logout(APIView):
+
+    def post(self, request, format=None):
+        logout(request)
+        return Response('logged out')
 
 @api_view(['GET'])
 def repeat_user(request):

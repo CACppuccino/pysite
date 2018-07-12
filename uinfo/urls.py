@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^api-token-refresh/', refresh_jwt_token),
     url(r'^api-token-verify/', verify_jwt_token),
     url(r'^usrRegister/$', views.usrRigister.as_view()),
+    url(r'^usrLogout/$', views.Logout.as_view()),
     url(r'^basicInfo/$', views.UserList.as_view()),
     url(r'^authValidate/$', views.usrValidate.as_view()),
     url(r'repeatUser/$', views.repeat_user),
